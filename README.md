@@ -28,7 +28,10 @@
     return;
     end
 ```
-<h2>Select mean and std for reward distribution on every arms<a name="2"></a></h2><p>Mean and standard deviation are randomly uniformly drawn from [0,1]</p>
+<h2>Select mean and std for reward distribution on every arms<a name="2"></a></h2>
+<p>Mean and standard deviation are randomly uniformly drawn from [0,1]</p>
+
+
 ```matlab
 mu = zeros(K,1);
 sigma = zeros(K,1);
