@@ -1,7 +1,7 @@
 
 </style></head><body><div class="content"><h1>Example of how-to-use bandit algorithms</h1><p>In this example, we have to choose between K levers at each iteration. Following the selection of a lever, we receive a reward. The reward is drawn from gaussian distributions. Every lever is assigned a gaussian distribution with unkown mean and standard deviation.</p><h2>Contents</h2><div><ul><li><a href="#1">Simulation parameters</a></li><li><a href="#2">Select mean and std for reward distribution on every arms</a></li><li><a href="#3">Looping on every algorithm</a></li><li><a href="#5">Reset the simulation data</a></li><li><a href="#6">Simulation for every algorithm</a></li><li><a href="#7">Recall that pseudo regret is T times mean of the best arm minus the cumulated reward</a></li><li><a href="#9">Formatting plots</a></li><li><a href="#10">Conclusions</a></li></ul></div><h2>Simulation parameters<a name="1"></a></h2>
 <pre class="codeinput">
-```matlab
+```
 clear ; close all; clc     % Initialization
 K = 10;                    % Number of arms
 T = 10000;                 % Horizon
@@ -20,7 +20,7 @@ end
 </pre>
 <h2>Select mean and std for reward distribution on every arms<a name="2"></a></h2><p>Mean and standard deviation are randomly uniformly drawn from [0,1]</p>
 <pre class="codeinput">
-```matlab
+```
 mu = zeros(K,1);
 sigma = zeros(K,1);
 
@@ -45,13 +45,11 @@ Arm 7 has mean 0.151995 and std 0.823209
 Arm 8 has mean 0.753612 and std 0.929680
 Arm 9 has mean 0.176593 and std 0.308989
 Arm 10 has mean 0.935610 and std 0.656420
+</pre>
 
 <h2>Looping on every algorithm<a name="3"></a></h2>
 <pre class="codeinput">
-
-<span class="keyword">for</span> s=1:size(bandit_types,1)
-</pre><pre class="codeinput">  <span class="comment">% Instantiate algorithm with correct type</span>
-```matlab
+```
 for s=1:size(bandit_types,1)
   % Instantiate algorithm with correct type
   bandit_type = strtrim(bandit_types(s,:));
@@ -78,14 +76,14 @@ for s=1:size(bandit_types,1)
 </pre>
 <h2>Reset the simulation data<a name="5"></a></h2>
 <pre class="codeinput">
-```matlab
+```
 hist_rewards = [];  % Save rewards at every round
 playcount = zeros(K,1);
 ```
 </pre>
 <h2>Simulation for every algorithm<a name="6"></a></h2>
 <pre class="codeinput">
-```matlab
+```
   for t=1:T
     [i,pb] = bandit.select();                         % Select arm based on the algorithm strategy
     reward = random(reward_distrib,mu(i),sigma(i));   % Reward computed from corresponding distribution
@@ -115,7 +113,8 @@ Arm 8 has mean 0.753612 and std 0.929680	played 970 times
 Arm 9 has mean 0.176593 and std 0.308989	played 1013 times
 Arm 10 has mean 0.935610 and std 0.656420	played 989 times
 Refer to plot to see the pseudo-regret
-</pre><pre class="codeoutput">
+</pre>
+<pre class="codeoutput">
 
 ----- Results for exp3 -----
 Initial distribution per arm
@@ -130,7 +129,8 @@ Arm 8 has mean 0.753612 and std 0.929680	played 378 times
 Arm 9 has mean 0.176593 and std 0.308989	played 111 times
 Arm 10 has mean 0.935610 and std 0.656420	played 7563 times
 Refer to plot to see the pseudo-regret
-</pre><pre class="codeoutput">
+</pre>
+<pre class="codeoutput">
 
 ----- Results for softmax -----
 Initial distribution per arm
@@ -145,7 +145,8 @@ Arm 8 has mean 0.753612 and std 0.929680	played 2763 times
 Arm 9 has mean 0.176593 and std 0.308989	played 0 times
 Arm 10 has mean 0.935610 and std 0.656420	played 1 times
 Refer to plot to see the pseudo-regret
-</pre><pre class="codeoutput">
+</pre>
+<pre class="codeoutput">
 
 ----- Results for softmax_dec -----
 Initial distribution per arm
@@ -160,7 +161,8 @@ Arm 8 has mean 0.753612 and std 0.929680	played 1293 times
 Arm 9 has mean 0.176593 and std 0.308989	played 112 times
 Arm 10 has mean 0.935610 and std 0.656420	played 4800 times
 Refer to plot to see the pseudo-regret
-</pre><pre class="codeoutput">
+</pre>
+<pre class="codeoutput">
 
 ----- Results for softmix -----
 Initial distribution per arm
@@ -175,7 +177,8 @@ Arm 8 has mean 0.753612 and std 0.929680	played 233 times
 Arm 9 has mean 0.176593 and std 0.308989	played 218 times
 Arm 10 has mean 0.935610 and std 0.656420	played 7497 times
 Refer to plot to see the pseudo-regret
-</pre><pre class="codeoutput">
+</pre>
+<pre class="codeoutput">
 
 ----- Results for greedy_first -----
 Initial distribution per arm
@@ -190,7 +193,8 @@ Arm 8 has mean 0.753612 and std 0.929680	played 105 times
 Arm 9 has mean 0.176593 and std 0.308989	played 93 times
 Arm 10 has mean 0.935610 and std 0.656420	played 9095 times
 Refer to plot to see the pseudo-regret
-</pre><pre class="codeoutput">
+</pre>
+<pre class="codeoutput">
 
 ----- Results for greedy_mix -----
 Initial distribution per arm
@@ -210,7 +214,7 @@ Refer to plot to see the pseudo-regret
 <h2>Formatting plots<a name="9"></a></h2>
 
 <pre class="codeinput">
-```matlab
+```
 title(['Pseudo regret with K=' num2str(K) ', T=' num2str(T) ', \gamma=' num2str(gamma)]);
 xlabel('Simulation iterations');
 ylabel('Pseudo-regret value');
