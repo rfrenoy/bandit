@@ -6,8 +6,20 @@
     T = 10000;                 % Horizon
     reward_distrib = 'norm';   % Reward distribution
     verbose = false;           % Print ongoing results if set to true
-    bandit_types = char('dummy','exp3','softmax','softmax_dec','softmix','greedy_first','greedy_mix');
-    gammas = [0.1,0.1,0.1,0.8,0.8,0.1,0.8]; % Gamma parameter for exploitation vs exploration tradeoff
+    bandit_types = char('dummy',
+						'exp3',
+						'softmax',
+						'softmax_dec',
+						'softmix',
+						'greedy_first',
+						'greedy_mix');
+    gammas = [0.1,
+			  0.1,
+			  0.1,
+			  0.8,
+			  0.8,
+			  0.1,
+			  0.8]; % Gamma parameter for exploitation vs exploration tradeoff
 
 
     if size(bandit_types,1) ~= length(gammas)
@@ -17,8 +29,7 @@
     end
 ```
 <h2>Select mean and std for reward distribution on every arms<a name="2"></a></h2><p>Mean and standard deviation are randomly uniformly drawn from [0,1]</p>
-<pre class="codeinput">
-```
+```matlab
 mu = zeros(K,1);
 sigma = zeros(K,1);
 
@@ -31,7 +42,6 @@ end
 hold on; % Holding on to plot results from all algorithms in the same graph
 x = 1:1:T;
 ```
-</pre>
 
 <pre class="codeoutput">Arm 1 has mean 0.839179 and std 0.693495
 Arm 2 has mean 0.188132 and std 0.096875
@@ -46,8 +56,7 @@ Arm 10 has mean 0.935610 and std 0.656420
 </pre>
 
 <h2>Looping on every algorithm<a name="3"></a></h2>
-<pre class="codeinput">
-```
+```matlab
 for s=1:size(bandit_types,1)
   % Instantiate algorithm with correct type
   bandit_type = strtrim(bandit_types(s,:));
@@ -71,17 +80,13 @@ for s=1:size(bandit_types,1)
       bandit = softmax(K,gamma);
   end
 ```
-</pre>
 <h2>Reset the simulation data<a name="5"></a></h2>
-<pre class="codeinput">
-```
+```matlab
 hist_rewards = [];  % Save rewards at every round
 playcount = zeros(K,1);
 ```
-</pre>
 <h2>Simulation for every algorithm<a name="6"></a></h2>
-<pre class="codeinput">
-```
+```matlab
 for t=1:T
     [i,pb] = bandit.select();                         % Select arm based on the algorithm strategy
     reward = random(reward_distrib,mu(i),sigma(i));   % Reward computed from corresponding distribution
@@ -95,7 +100,6 @@ for t=1:T
 	plot(x,pseudo_regret);
 end
 ```
-</pre>
 <pre class="codeoutput">
 
 ----- Results for dummy -----
@@ -210,16 +214,13 @@ Refer to plot to see the pseudo-regret
 </pre>
 
 <h2>Formatting plots<a name="9"></a></h2>
-
-<pre class="codeinput">
-```
+```matlab
 title(['Pseudo regret with K=' num2str(K) ', T=' num2str(T) ', \gamma=' num2str(gamma)]);
 xlabel('Simulation iterations');
 ylabel('Pseudo-regret value');
 legend(bandit_types);
 hold off;   % Revealing every plots
 ```
-</pre>
 
 <img vspace="5" hspace="5" src="main.png" alt=""> 
 
