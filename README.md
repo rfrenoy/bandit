@@ -2,20 +2,20 @@
 </style></head><body><div class="content"><h1>Example of how-to-use bandit algorithms</h1><p>In this example, we have to choose between K levers at each iteration. Following the selection of a lever, we receive a reward. The reward is drawn from gaussian distributions. Every lever is assigned a gaussian distribution with unkown mean and standard deviation.</p><h2>Contents</h2><div><ul><li><a href="#1">Simulation parameters</a></li><li><a href="#2">Select mean and std for reward distribution on every arms</a></li><li><a href="#3">Looping on every algorithm</a></li><li><a href="#5">Reset the simulation data</a></li><li><a href="#6">Simulation for every algorithm</a></li><li><a href="#7">Recall that pseudo regret is T times mean of the best arm minus the cumulated reward</a></li><li><a href="#9">Formatting plots</a></li><li><a href="#10">Conclusions</a></li></ul></div><h2>Simulation parameters<a name="1"></a></h2>
 <pre class="codeinput">
 ```
-clear ; close all; clc     % Initialization
-K = 10;                    % Number of arms
-T = 10000;                 % Horizon
-reward_distrib = 'norm';   % Reward distribution
-verbose = false;           % Print ongoing results if set to true
-bandit_types = char('dummy','exp3','softmax','softmax_dec','softmix','greedy_first','greedy_mix');
-gammas = [0.1,0.1,0.1,0.8,0.8,0.1,0.8]; % Gamma parameter for exploitation vs exploration tradeoff
+    clear ; close all; clc     % Initialization
+    K = 10;                    % Number of arms
+    T = 10000;                 % Horizon
+    reward_distrib = 'norm';   % Reward distribution
+    verbose = false;           % Print ongoing results if set to true
+    bandit_types = char('dummy','exp3','softmax','softmax_dec','softmix','greedy_first','greedy_mix');
+    gammas = [0.1,0.1,0.1,0.8,0.8,0.1,0.8]; % Gamma parameter for exploitation vs exploration tradeoff
 
 
-if size(bandit_types,1) ~= length(gammas)
-    fprintf('Error, please provide as many gamma parameters as there are algorithms\n');
-    fprintf('Nb gamma parameters: %d\tNb algorithms: %d',length(gammas),length(bandit_types));
+    if size(bandit_types,1) ~= length(gammas)
+        fprintf('Error, please provide as many gamma parameters as there are algorithms\n');
+        fprintf('Nb gamma parameters: %d\tNb algorithms: %d',length(gammas),length(bandit_types));
     return;
-end
+    end
 ```
 </pre>
 <h2>Select mean and std for reward distribution on every arms<a name="2"></a></h2><p>Mean and standard deviation are randomly uniformly drawn from [0,1]</p>
@@ -84,7 +84,7 @@ playcount = zeros(K,1);
 <h2>Simulation for every algorithm<a name="6"></a></h2>
 <pre class="codeinput">
 ```
-  for t=1:T
+for t=1:T
     [i,pb] = bandit.select();                         % Select arm based on the algorithm strategy
     reward = random(reward_distrib,mu(i),sigma(i));   % Reward computed from corresponding distribution
     bandit.update(i,reward);                          % Update weigths/probabilities
